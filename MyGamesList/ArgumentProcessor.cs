@@ -18,8 +18,11 @@ namespace MyGamesList
             command.Execute();
         }
 
-        private string ParseArgument(string argument)
+        public string ParseArgument(string argument)
         {
+            if (argument == null)
+                return string.Empty;
+
             return argument.ToLower().Trim();
         }
     }

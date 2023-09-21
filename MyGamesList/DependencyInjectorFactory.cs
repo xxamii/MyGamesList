@@ -4,8 +4,8 @@ namespace MyGamesList
 {
     public class DependencyInjectorFactory
     {
-        private ICommandMapper commandMapper;
-        private IArgumentProcessor argumentProcessor;
+        private ICommandMapper? commandMapper;
+        private IArgumentProcessor? argumentProcessor;
 
         public IArgumentProcessor GetArgumentProcessor()
         {

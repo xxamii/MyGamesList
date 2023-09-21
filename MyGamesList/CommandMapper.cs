@@ -13,8 +13,8 @@ namespace MyGamesList
 
         public ICommand GetCommand(string argument)
         {
-            ICommand result = _commands.FirstOrDefault(a => a.CommandName == argument);
-            ICommand command = result ?? new NotFoundCommand(argument);
+            ICommand defaultCommand = new NotFoundCommand(argument);
+            ICommand command = _commands.FirstOrDefault(a => a.CommandName == argument, defaultCommand);
             return command;
         }
     }
