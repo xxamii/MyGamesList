@@ -11,10 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseLayer", "DatabaseLa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{647A5CBC-02D9-4D26-AA0C-589F85759F8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogicLayer.Abstractions", "BusinessLogicLayer.Abstractions\BusinessLogicLayer.Abstractions.csproj", "{EC5CA007-AE1C-42CE-88B9-00B12C7675F5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseLayer.Abstractions", "DatabaseLayer.Abstractions\DatabaseLayer.Abstractions.csproj", "{E109F73F-09E2-4B22-AC63-F05F1AAA36B5}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,14 +33,6 @@ Global
 		{647A5CBC-02D9-4D26-AA0C-589F85759F8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{647A5CBC-02D9-4D26-AA0C-589F85759F8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{647A5CBC-02D9-4D26-AA0C-589F85759F8F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EC5CA007-AE1C-42CE-88B9-00B12C7675F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EC5CA007-AE1C-42CE-88B9-00B12C7675F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EC5CA007-AE1C-42CE-88B9-00B12C7675F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EC5CA007-AE1C-42CE-88B9-00B12C7675F5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E109F73F-09E2-4B22-AC63-F05F1AAA36B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E109F73F-09E2-4B22-AC63-F05F1AAA36B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E109F73F-09E2-4B22-AC63-F05F1AAA36B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E109F73F-09E2-4B22-AC63-F05F1AAA36B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
