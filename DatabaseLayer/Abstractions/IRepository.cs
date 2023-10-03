@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Core.Models;
 
 namespace DatabaseLayer.Abstractions
 {
-    public interface IRepository
+    public interface IRepository<T>
+        where T : Entity
     {
+        Task<List<T>> GetEntities(Func<T, bool> filter);
+        Task CreateEntity(T entity);
+        Task UpdateEntity(T entity);
+        Task DeleteEntity(T entity);
     }
 }
