@@ -1,8 +1,7 @@
 ﻿using MyGamesList;
 using MyGamesList.Abstractions;
 
-DependencyInjectorFactory dependencyInjector = new DependencyInjectorFactory();
-IArgumentProcessor argumentProcessor = dependencyInjector.GetArgumentProcessor();
+IArgumentProcessor argumentProcessor = MyGamesList.DependencyInjectorFactory.GetArgumentProcessor();
 
 while (true)
 {

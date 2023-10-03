@@ -2,12 +2,12 @@
 
 namespace MyGamesList
 {
-    public class DependencyInjectorFactory
+    public static class DependencyInjectorFactory
     {
-        private ICommandMapper? commandMapper;
-        private IArgumentProcessor? argumentProcessor;
+        private static ICommandMapper? commandMapper;
+        private static IArgumentProcessor? argumentProcessor;
 
-        public IArgumentProcessor GetArgumentProcessor()
+        public static IArgumentProcessor GetArgumentProcessor()
         {
             if (argumentProcessor == null)
             {
@@ -18,7 +18,7 @@ namespace MyGamesList
             return argumentProcessor;
         }
 
-        private ICommandMapper GetCommandMapper()
+        private static ICommandMapper GetCommandMapper()
         {
             if (commandMapper == null)
             {
