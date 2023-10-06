@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Core;
 using DatabaseLayer.Abstractions;
 
@@ -13,15 +14,17 @@ namespace DatabaseLayer
             pathToDB = Path.GetFullPath(appSettings.PathToDB);
         }
 
-        public async Task<string> ReadFromDB()
+        public async Task<JObject> ReadFromDB()
         {
             string text = await File.ReadAllTextAsync(pathToDB);
-            return text;
+            JObject result = JObject.Parse(text);
+            return result;
         }
 
-        public async Task WriteToDB(string data)
+        public async Task WriteToDB(JObject data)
         {
-            await File.WriteAllTextAsync(pathToDB, data);
+            string text = data.ToString();
+            await File.WriteAllTextAsync(pathToDB, text);
         }
     }
 }

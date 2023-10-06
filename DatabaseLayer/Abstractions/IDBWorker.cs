@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Newtonsoft.Json.Linq;
 
 namespace DatabaseLayer.Abstractions
 {
     public interface IDBWorker
     {
-        public Task WriteToDB(string data);
-        public Task<string> ReadFromDB();
+        public Task WriteToDB(JObject data);
+        public Task<JObject> ReadFromDB();
     }
 }
