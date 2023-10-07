@@ -9,8 +9,7 @@ namespace DatabaseLayer
         where T : Entity
     {
         private readonly IDBWorker _dbWorker;
-        private JObject _currentJObject;
-        private JToken? _currentToken;
+        private JObject? _currentJObject;
 
         public Repository(IDBWorker dbWorker)
         {
@@ -19,40 +18,42 @@ namespace DatabaseLayer
 
         public async Task<T> CreateEntity(T entity)
         {
-            throw new NotImplementedException();
+            List<T> result = await ReadFromDB();
+
+            int id = GetNewId(result);
+            entity.Id = id;
+            result.Add(entity);
+
+            await WriteToDB(result);
+            return entity;
         }
 
         public async Task DeleteEntity(T entity)
         {
-            throw new NotImplementedException();
+            List<T> result = await ReadFromDB();
+
+            for (int i = 0; i < result.Count(); i++)
+            {
+                if (result[i].Id == entity.Id)
+                {
+                    result.RemoveAt(i);
+                    break;
+                }
+            }
+
+            await WriteToDB(result);
         }
 
         public async Task<List<T>> GetEntities(Func<T, bool>? filter = null)
         {
-            List<T> result = new List<T>();
-            await ReadFromDB();
-
-            if (_currentToken != null)
-            {
-                List<T>? entities = JsonConvert.DeserializeObject<List<T>>(_currentToken.ToString());
-                result = entities ?? result;
-            }
-
+            List<T> result = await ReadFromDB();
             result = filter == null ? result : result.Where(filter).ToList();
-
             return result;
         }
 
         public async Task<T> UpdateEntity(T entity)
         {
-            List<T> result = new List<T>();
-            await ReadFromDB();
-
-            if (_currentToken != null)
-            {
-                List<T>? entities = JsonConvert.DeserializeObject<List<T>>(_currentToken.ToString());
-                result = entities ?? result;
-            }
+            List<T> result = await ReadFromDB();
 
             for (int i = 0; i < result.Count(); i++)
             {
@@ -63,25 +64,43 @@ namespace DatabaseLayer
                 }
             }
 
-            _currentToken = JToken.FromObject(result);
-            await WriteToDB();
+            await WriteToDB(result);
 
             return entity;
         }
 
-        private async Task ReadFromDB()
+        private async Task<List<T>> ReadFromDB()
         {
             JObject jObject = await _dbWorker.ReadFromDB();
             JToken? jsonProperty = jObject[typeof(T).Name];
+            List<T> result = new List<T>();
+
+            if (jsonProperty != null)
+            {
+                List<T>? entities = JsonConvert.DeserializeObject<List<T>>(jsonProperty.ToString());
+                result = entities ?? result;
+            }
 
             _currentJObject = jObject;
-            _currentToken = jsonProperty;
+            return result;
         }
 
-        private async Task WriteToDB()
+        private async Task WriteToDB(List<T> entities)
         {
-            _currentJObject[typeof(T).Name] = _currentToken;
-            await _dbWorker.WriteToDB(_currentJObject);
+            if (_currentJObject != null)
+            {
+                JToken jsonProperty = JToken.FromObject(entities);
+                _currentJObject[typeof(T).Name] = jsonProperty;
+                await _dbWorker.WriteToDB(_currentJObject);
+            }
+        }
+
+        private int GetNewId(List<T> entities)
+        {
+            entities.Sort((a, b) => a.Id >= b.Id ? 1 : -1);
+            T? entity = entities.LastOrDefault();
+            int id = entity == null ? 1 : entity.Id + 1;
+            return id;
         }
     }
 }
