@@ -14,17 +14,15 @@ namespace DatabaseLayer
             pathToDB = Path.GetFullPath(appSettings.PathToDB);
         }
 
-        public async Task<JObject> ReadFromDB()
+        public async Task<string> ReadFromDB()
         {
-            string text = await File.ReadAllTextAsync(pathToDB);
-            JObject result = JObject.Parse(text);
-            return result;
+            string data = await File.ReadAllTextAsync(pathToDB);
+            return data;
         }
 
-        public async Task WriteToDB(JObject data)
+        public async Task WriteToDB(string data)
         {
-            string text = data.ToString();
-            await File.WriteAllTextAsync(pathToDB, text);
+            await File.WriteAllTextAsync(pathToDB, data);
         }
     }
 }

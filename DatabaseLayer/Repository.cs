@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using Core.Models;
 using DatabaseLayer.Abstractions;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace DatabaseLayer
 {
@@ -32,7 +33,7 @@ namespace DatabaseLayer
         {
             List<T> result = await ReadFromDB();
 
-            for (int i = 0; i < result.Count(); i++)
+            for (int i = 0; i < result.Count; i++)
             {
                 if (result[i].Id == entity.Id)
                 {
@@ -55,23 +56,23 @@ namespace DatabaseLayer
         {
             List<T> result = await ReadFromDB();
 
-            for (int i = 0; i < result.Count(); i++)
+            for (int i = 0; i < result.Count; i++)
             {
                 if (result[i].Id == entity.Id)
                 {
                     result[i] = entity;
-                    break;
+                    await WriteToDB(result);
+                    return result[i];
                 }
             }
-
-            await WriteToDB(result);
 
             return entity;
         }
 
-        private async Task<List<T>> ReadFromDB()
+        public async Task<List<T>> ReadFromDB()
         {
-            JObject jObject = await _dbWorker.ReadFromDB();
+            string data = await _dbWorker.ReadFromDB();
+            JObject jObject = JObject.Parse(data);
             JToken? jsonProperty = jObject[typeof(T).Name];
             List<T> result = new List<T>();
 
@@ -85,22 +86,23 @@ namespace DatabaseLayer
             return result;
         }
 
+        public int GetNewId(List<T> entities)
+        {
+            entities.Sort((a, b) => a.Id >= b.Id ? 1 : -1);
+            T? entity = entities.LastOrDefault();
+            int id = entity == null ? 1 : entity.Id + 1;
+            return id;
+        }
+
         private async Task WriteToDB(List<T> entities)
         {
             if (_currentJObject != null)
             {
                 JToken jsonProperty = JToken.FromObject(entities);
                 _currentJObject[typeof(T).Name] = jsonProperty;
-                await _dbWorker.WriteToDB(_currentJObject);
+                string data = _currentJObject.ToString();
+                await _dbWorker.WriteToDB(data);
             }
-        }
-
-        private int GetNewId(List<T> entities)
-        {
-            entities.Sort((a, b) => a.Id >= b.Id ? 1 : -1);
-            T? entity = entities.LastOrDefault();
-            int id = entity == null ? 1 : entity.Id + 1;
-            return id;
         }
     }
 }
