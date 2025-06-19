@@ -8,4 +8,8 @@ TBD
 
 # What I Learned
 
-TBD
+- Clean n-layered architecture design.
+- Working in an agile manner using the SCRUM method and Trello.
+- The Command design pattern.
+- The Dependency Injection design pattern.
+- The Factory design pattern.
